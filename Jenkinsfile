@@ -210,8 +210,8 @@ pipeline {
             steps {
                 script {
                     // Pull web gateway ingress hostname from EKS dynamically inside a scripted block
-                    def targetUrl = sh(script: "kubectl get svc web -o 
-                    jsonpath='{.status.loadBalancer.ingress.hostname}'", returnStdout: true).trim()
+                    def targetUrl = sh(script: "kubectl get svc web -o jsonpath='{.status.loadBalancer.ingress.hostname}'", returnStdout: true).trim()
+                    
                     sh "docker run --rm -v ${WORKSPACE}:/zap/wrk/:rw owasp/zap2docker-stable zap-baseline.py -t http://${targetUrl} -r zap_report.html || true"
                 }
             }
